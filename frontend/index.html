@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Student Management System</title>
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Dynamic Shell Placeholder. ui.js will inject the sidebar and top navbar around this slot -->
+  <div id="app-shell">
+    
+    <!-- 1. Header Group -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h2 id="dashboard-welcome">Hello, Loading...</h2>
+        <p id="dashboard-welcome-sub">Welcome to your academic operations dashboard.</p>
+      </div>
+      <div class="header-actions" id="dashboard-actions">
+        <!-- Dynamic header actions added by JS -->
+      </div>
+    </div>
+
+    <!-- 2. Dashboard Top Stat Cards -->
+    <div class="stats-grid" id="stats-grid-container">
+      <!-- Total Students Card -->
+      <div class="stat-card blue">
+        <div>
+          <div class="stat-label">Total Students</div>
+          <div class="stat-value" id="card-total-students">--</div>
+        </div>
+        <div class="stat-icon">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+      </div>
+
+      <!-- Total Subjects Card -->
+      <div class="stat-card green">
+        <div>
+          <div class="stat-label">Total Subjects</div>
+          <div class="stat-value" id="card-total-subjects">--</div>
+        </div>
+        <div class="stat-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+      </div>
+
+      <!-- Total Registrations Card -->
+      <div class="stat-card purple">
+        <div>
+          <div class="stat-label">Total Enrollments</div>
+          <div class="stat-value" id="card-total-registrations">--</div>
+        </div>
+        <div class="stat-icon">
+          <i class="fas fa-clipboard-list"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Dashboard Central Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Recent System Activities Panel -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h3 class="dashboard-card-title"><i class="fas fa-clock" style="color: var(--primary); margin-right: 8px;"></i>Recent System Activities</h3>
+          <a href="history.html" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" id="btn-view-history">View All</a>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Initiator</th>
+                <th>Action Type</th>
+                <th>Changes</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-recent-activity">
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                  <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Loading activity logs...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Action panel -->
+      <div class="dashboard-card" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="dashboard-card-header" style="margin-bottom: 0;">
+          <h3 class="dashboard-card-title"><i class="fas fa-bolt" style="color: var(--warning); margin-right: 8px;"></i>Quick Tasks</h3>
+        </div>
+        
+        <div id="quick-tasks-container" style="display: flex; flex-direction: column; gap: 12px; flex: 1; justify-content: center;">
+          <!-- Loaded dynamically by dashboard.js based on role -->
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Global scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  
+  <!-- Dashboard Page Specific logic -->
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

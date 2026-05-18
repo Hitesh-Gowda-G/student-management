@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject Registration - SSIT Portal</title>
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Dynamic Shell Framework -->
+  <div id="app-shell">
+    
+    <!-- 1. Header Group -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h2>Subject Registration Portal</h2>
+        <p id="registration-portal-sub">Select your subjects and complete your semester enrollment.</p>
+      </div>
+      <div class="header-actions">
+        <span id="registered-success-badge" class="history-badge added" style="display: none; font-size: 13px; padding: 6px 14px;">
+          <i class="fas fa-check-circle" style="margin-right: 4px;"></i> Registration Active
+        </span>
+      </div>
+    </div>
+
+    <!-- 2. Dual Panel Layout -->
+    <div class="registration-container">
+      
+      <!-- LEFT PANEL: Subject Catalogue Selection Grid -->
+      <div>
+        <div style="margin-bottom: 16px; font-weight: 600; font-size: 15px; color: var(--text-primary);">
+          Available Subjects for Registration
+        </div>
+        <div class="subject-selection-list" id="grid-subjects-selection">
+          <!-- Dynamic Catalogue cards inserted here by JS -->
+          <div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px;">
+            <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Loading subject catalogue...
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: Selection Summary Sticky Drawer -->
+      <div class="registration-summary">
+        <h3 class="summary-title"><i class="fas fa-clipboard-list" style="color: var(--primary); margin-right: 8px;"></i>Selection Summary</h3>
+        
+        <div class="summary-row">
+          <span>Selected Subjects</span>
+          <span id="summary-count" style="font-weight: 700; font-family: 'Outfit'; font-size: 16px;">0</span>
+        </div>
+        
+        <div class="summary-row">
+          <span>Total Credits Value</span>
+          <span id="summary-credits" style="font-weight: 700; font-family: 'Outfit'; font-size: 16px; color: var(--warning);">0</span>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+          Enrolled List
+        </div>
+
+        <!-- Selected list pills -->
+        <div class="selected-subject-pills" id="container-selected-pills">
+          <p style="font-size: 13px; color: var(--text-secondary); text-align: center; padding: 24px 0;" id="placeholder-summary-empty">
+            <i class="fas fa-tasks" style="display: block; font-size: 24px; margin-bottom: 8px; opacity: 0.5;"></i>
+            Click on subject cards on the left to select them.
+          </p>
+        </div>
+
+        <!-- Action Button -->
+        <button class="btn btn-primary" id="btn-submit-registration" style="width: 100%; padding: 12px; margin-top: 16px;" disabled>
+          <i class="fas fa-save"></i> Save & Confirm Registration
+        </button>
+
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; margin-top: 16px; text-align: center;">
+          <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 2px;"></i> You can modify your registrations anytime by changing selections and re-saving.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Global scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  
+  <!-- Page Specific Logic -->
+  <script src="assets/js/registration.js"></script>
+</body>
+</html>

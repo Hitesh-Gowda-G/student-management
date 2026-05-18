@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Student Management System</title>
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page-container">
+
+  <div class="auth-box">
+    <div class="auth-header-logo">
+      <div class="auth-logo"><i class="fas fa-university"></i></div>
+    </div>
+    <h2 class="auth-title">Welcome Back</h2>
+    <p class="auth-subtitle">Log in to access your SSIT Portal account</p>
+
+    <!-- Login Form -->
+    <form id="form-login">
+      <div class="form-group">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" class="form-control" placeholder="admin@ssit.edu or student@ssit.edu" required autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <a href="#" class="forgot-password-link" id="link-forgot-password">Forgot Password?</a>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+        <i class="fas fa-sign-in-alt"></i> Log In
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Need support? Contact <a href="mailto:support@ssit.edu">IT Helpdesk</a></p>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-backdrop" id="forgot-modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">Reset Password</span>
+        <i class="fas fa-times modal-close" id="btn-forgot-close"></i>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6;">
+          Enter your registered email address below, and we will send you instructions to reset your password.
+        </p>
+        <form id="form-forgot">
+          <div class="form-group">
+            <label for="forgot-email">Registered Email</label>
+            <input type="email" id="forgot-email" class="form-control" placeholder="Enter your email" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 12px;">
+            Send Reset Instructions
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+
+  <!-- Login Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. If already logged in, redirect straight to dashboard
+      const token = localStorage.getItem('token');
+      if (token) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // 2. Handle Login Form Submit
+      const loginForm = document.getElementById('form-login');
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        showLoader();
+
+        try {
+          const response = await api.post('/auth/login', { email, password });
+          
+          if (response.success) {
+            // Save active session
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
+            
+            showToast(`Welcome back, ${response.user.name}!`, 'success');
+            
+            // Redirect
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 1000);
+          } else {
+            showToast(response.message || 'Login failed.', 'error');
+          }
+        } catch (error) {
+          showToast(error.message || 'Connection to authentication server failed.', 'error');
+        } finally {
+          hideLoader();
+        }
+      });
+
+      // 3. Handle Forgot Password Modal Toggle
+      const forgotLink = document.getElementById('link-forgot-password');
+      const forgotBackdrop = document.getElementById('forgot-modal-backdrop');
+      const forgotClose = document.getElementById('btn-forgot-close');
+      const forgotForm = document.getElementById('form-forgot');
+
+      forgotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        forgotBackdrop.classList.add('show');
+      });
+
+      const closeForgotModal = () => {
+        forgotBackdrop.classList.remove('show');
+        forgotForm.reset();
+      };
+
+      forgotClose.addEventListener('click', closeForgotModal);
+      
+      // Close on outside click
+      forgotBackdrop.addEventListener('click', (e) => {
+        if (e.target === forgotBackdrop) closeForgotModal();
+      });
+
+      // Handle Forgot Password Submit
+      forgotForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('forgot-email').value.trim();
+
+        showLoader();
+        try {
+          const response = await api.post('/auth/forgot-password', { email });
+          showToast(response.message, 'success');
+          closeForgotModal();
+        } catch (error) {
+          showToast(error.message || 'Failed to submit request.', 'error');
+        } finally {
+          hideLoader();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

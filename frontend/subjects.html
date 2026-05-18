@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject Management - SSIT Portal</title>
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Dynamic Shell Framework -->
+  <div id="app-shell">
+    
+    <!-- 1. Header Group -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h2>Subject Catalog</h2>
+        <p>Maintain the official list of academic courses and subject credits.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-add-subject-modal">
+        <i class="fas fa-plus-circle"></i> Add New Subject
+      </button>
+    </div>
+
+    <!-- 2. Interactive Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">
+          Academic catalog master database
+        </span>
+      </div>
+
+      <!-- Quick Search inside table -->
+      <div class="search-bar-wrapper" style="display: block; width: 280px; position: relative;">
+        <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+        <input type="text" id="search-subject" class="form-control" placeholder="Search by code or name..." style="padding-left: 42px;">
+      </div>
+    </div>
+
+    <!-- 3. Subjects Table -->
+    <div class="dashboard-card" style="padding: 0; overflow: hidden;">
+      <div class="table-responsive">
+        <table class="custom-table" id="table-subjects">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Subject Code</th>
+              <th style="width: 50%;">Subject Name</th>
+              <th style="width: 15%;">Credits</th>
+              <th style="text-align: right; width: 15%;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-subjects">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Loading subjects catalog...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. Pagination Panel -->
+    <div class="pagination-wrapper">
+      <div class="pagination-info" id="pagination-summary">
+        Showing 0 to 0 of 0 entries
+      </div>
+      <div class="pagination-controls" id="pagination-buttons">
+        <!-- Dynamic Page Buttons -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADD / EDIT SUBJECT MODAL -->
+  <div class="modal-backdrop" id="subject-form-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title" id="subject-modal-title">Add New Subject</span>
+        <i class="fas fa-times modal-close" id="btn-close-subject-modal"></i>
+      </div>
+      <div class="modal-body">
+        <form id="form-subject-data">
+          <!-- Hidden ID for Editing -->
+          <input type="hidden" id="subject-id-field">
+
+          <div class="form-group">
+            <label for="subject-code">Subject Code</label>
+            <input type="text" id="subject-code" class="form-control" placeholder="e.g. CS602" required style="text-transform: uppercase;">
+          </div>
+
+          <div class="form-group">
+            <label for="subject-name">Subject Name</label>
+            <input type="text" id="subject-name" class="form-control" placeholder="e.g. Database Management Systems" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject-credits">Subject Credits</label>
+            <select id="subject-credits" class="select-control" style="width: 100%;" required>
+              <option value="" disabled selected>Select Credits</option>
+              <option value="1">1 Credit</option>
+              <option value="2">2 Credits</option>
+              <option value="3">3 Credits</option>
+              <option value="4">4 Credits</option>
+              <option value="5">5 Credits</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-subject">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btn-save-subject">Save Subject</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  
+  <!-- Page Specific Logic -->
+  <script src="assets/js/subjects.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "student-management-system",
+  "version": "1.0.0",
+  "description": "A complete full-stack responsive Student Management System portal",
+  "main": "backend/server.js",
+  "scripts": {
+    "postinstall": "npm install --prefix backend",
+    "start": "node backend/server.js",
+    "seed": "npm run seed --prefix backend",
+    "backend-dev": "npm run dev --prefix backend"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}

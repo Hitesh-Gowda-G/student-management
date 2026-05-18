@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity History - SSIT Portal</title>
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Dynamic Shell Framework -->
+  <div id="app-shell">
+    
+    <!-- 1. Header Group -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h2>Activity Audit History</h2>
+        <p>Track every creation, modification, and deletion across students, subjects, and registrations.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="btn-refresh-history">
+          <i class="fas fa-sync-alt"></i> Refresh Logs
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Interactive Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">
+          <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 6px;"></i> Color Indicators: 
+          <span style="display: inline-flex; align-items: center; gap: 4px; margin-left: 8px;"><span style="width: 10px; height: 10px; border-radius: 50%; background-color: var(--success);"></span> Added</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; margin-left: 12px;"><span style="width: 10px; height: 10px; border-radius: 50%; background-color: var(--warning);"></span> Modified</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; margin-left: 12px;"><span style="width: 10px; height: 10px; border-radius: 50%; background-color: var(--danger);"></span> Deleted</span>
+        </span>
+      </div>
+
+      <!-- Quick Search inside table -->
+      <div class="search-bar-wrapper" style="display: block; width: 280px; position: relative;">
+        <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+        <input type="text" id="search-history" class="form-control" placeholder="Search logs by keyword..." style="padding-left: 42px;">
+      </div>
+    </div>
+
+    <!-- 3. History Table -->
+    <div class="dashboard-card" style="padding: 0; overflow: hidden;">
+      <div class="table-responsive">
+        <table class="custom-table" id="table-history">
+          <thead>
+            <tr>
+              <th style="width: 15%;">Date & Time</th>
+              <th style="width: 20%;">Student / Entity Name</th>
+              <th style="width: 20%;">Action Type</th>
+              <th style="width: 45%;">Operation Details & Value Differences</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-history">
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">
+                <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Loading activity history logs...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Global scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/ui.js"></script>
+  
+  <!-- Page Specific Logic -->
+  <script src="assets/js/history.js"></script>
+</body>
+</html>
