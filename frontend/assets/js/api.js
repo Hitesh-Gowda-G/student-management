@@ -10,7 +10,7 @@ const API_BASE_URL = (() => {
   }
   // Otherwise, point to the live Render backend
   // Note: During deploy, user can replace this with their actual Render service endpoint URL
-  return 'https://student-management-backend-render.onrender.com/api';
+  return 'https://student-management-backend-jf02.onrender.com/api';
 })();
 
 /**
