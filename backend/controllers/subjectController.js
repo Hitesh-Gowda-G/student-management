@@ -4,12 +4,30 @@ const { logActivity } = require('../utils/historyLogger');
 // 1. Get all subjects with search & pagination
 const getSubjects = async (req, res) => {
   try {
-    const { search, page = 1, limit = 10 } = req.query;
+    const { search, semester, page = 1, limit = 10 } = req.query;
     const offset = (page - 1) * limit;
 
     let queryText = 'SELECT * FROM subjects WHERE 1=1';
     const queryParams = [];
     let paramCounter = 1;
+
+    // Filter by semester dynamically based on student role or search criteria
+    if (req.user && req.user.role === 'student') {
+      const studentId = req.user.student_id;
+      if (studentId) {
+        const studentResult = await db.query('SELECT semester FROM students WHERE id = $1', [studentId]);
+        if (studentResult.rows.length > 0) {
+          const studentSem = studentResult.rows[0].semester;
+          queryText += ` AND semester = $${paramCounter}`;
+          queryParams.push(studentSem);
+          paramCounter++;
+        }
+      }
+    } else if (semester) {
+      queryText += ` AND semester = $${paramCounter}`;
+      queryParams.push(parseInt(semester));
+      paramCounter++;
+    }
 
     // Search filter
     if (search) {
@@ -69,10 +87,10 @@ const getSubjectById = async (req, res) => {
 
 // 3. Add subject (Admin Only)
 const addSubject = async (req, res) => {
-  const { code, name, credits } = req.body;
+  const { code, name, credits, semester } = req.body;
 
-  if (!code || !name || !credits) {
-    return res.status(400).json({ success: false, message: 'Code, Name, and Credits are required.' });
+  if (!code || !name || !credits || !semester) {
+    return res.status(400).json({ success: false, message: 'Code, Name, Credits, and Semester are required.' });
   }
 
   try {
@@ -83,8 +101,8 @@ const addSubject = async (req, res) => {
     }
 
     const result = await db.query(
-      'INSERT INTO subjects (code, name, credits) VALUES ($1, $2, $3) RETURNING *',
-      [code.toUpperCase(), name, parseInt(credits)]
+      'INSERT INTO subjects (code, name, credits, semester) VALUES ($1, $2, $3, $4) RETURNING *',
+      [code.toUpperCase(), name, parseInt(credits), parseInt(semester)]
     );
 
     const newSubject = result.rows[0];
@@ -112,10 +130,10 @@ const addSubject = async (req, res) => {
 // 4. Update subject (Admin Only)
 const updateSubject = async (req, res) => {
   const { id } = req.params;
-  const { code, name, credits } = req.body;
+  const { code, name, credits, semester } = req.body;
 
-  if (!code || !name || !credits) {
-    return res.status(400).json({ success: false, message: 'Code, Name, and Credits are required.' });
+  if (!code || !name || !credits || !semester) {
+    return res.status(400).json({ success: false, message: 'Code, Name, Credits, and Semester are required.' });
   }
 
   try {
@@ -137,8 +155,8 @@ const updateSubject = async (req, res) => {
     }
 
     const updateResult = await db.query(
-      'UPDATE subjects SET code = $1, name = $2, credits = $3 WHERE id = $4 RETURNING *',
-      [code.toUpperCase(), name, parseInt(credits), id]
+      'UPDATE subjects SET code = $1, name = $2, credits = $3, semester = $4 WHERE id = $5 RETURNING *',
+      [code.toUpperCase(), name, parseInt(credits), parseInt(semester), id]
     );
 
     const updatedSubject = updateResult.rows[0];

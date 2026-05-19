@@ -98,7 +98,7 @@ function renderSubjectsTable(subjects) {
   if (subjects.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="4" style="text-align: center; padding: 48px;">
+        <td colspan="5" style="text-align: center; padding: 48px;">
           <div class="empty-state" style="margin: 0; border: none;">
             <div class="empty-state-icon"><i class="fas fa-book-open"></i></div>
             <div class="empty-state-title">No Subjects Found</div>
@@ -115,6 +115,9 @@ function renderSubjectsTable(subjects) {
     row.innerHTML = `
       <td style="font-weight: 700; letter-spacing: 0.5px; font-family: 'Outfit'; font-size: 14px; color: var(--primary);">${sub.code}</td>
       <td style="font-weight: 600; color: var(--text-primary);">${sub.name}</td>
+      <td>
+        <span class="semester-badge" style="background-color: var(--secondary-light); color: var(--secondary); border-radius: var(--border-radius-sm); font-weight: 700; padding: 4px 10px;">Semester ${sub.semester}</span>
+      </td>
       <td>
         <span class="department-badge" style="background-color: var(--warning-light); color: var(--warning); border-radius: var(--border-radius-sm); font-weight: 700; padding: 4px 10px;">${sub.credits} Credits</span>
       </td>
@@ -196,6 +199,7 @@ async function openSubjectModal(mode, subjectId = null) {
         codeInput.value = sub.code;
         document.getElementById('subject-name').value = sub.name;
         document.getElementById('subject-credits').value = sub.credits;
+        document.getElementById('subject-semester').value = sub.semester;
 
         // Block changing code to maintain relational constraint links
         codeInput.disabled = true;
@@ -222,8 +226,9 @@ async function handleFormSubmit(e) {
   const code = document.getElementById('subject-code').value.trim();
   const name = document.getElementById('subject-name').value.trim();
   const credits = document.getElementById('subject-credits').value;
+  const semester = document.getElementById('subject-semester').value;
 
-  const payload = { code, name, credits };
+  const payload = { code, name, credits, semester };
 
   showLoader();
   try {

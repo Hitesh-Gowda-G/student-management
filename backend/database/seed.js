@@ -67,18 +67,26 @@ async function seed() {
     if (parseInt(subjectsCount.rows[0].count) === 0) {
       console.log('Seeding default subjects...');
       const defaultSubjects = [
-        ['CS601', 'Software Engineering', 4],
-        ['CS602', 'Database Management Systems', 4],
-        ['CS603', 'Computer Networks', 3],
-        ['CS604', 'Web Technologies', 3],
-        ['CS605', 'Artificial Intelligence', 3],
-        ['CS606', 'Cryptography & Network Security', 4],
-        ['CS607', 'Mobile Application Development', 3]
+        ['CS601', 'Software Engineering', 4, 6],
+        ['CS602', 'Database Management Systems', 4, 6],
+        ['CS603', 'Computer Networks', 3, 6],
+        ['CS604', 'Web Technologies', 3, 6],
+        ['CS605', 'Artificial Intelligence', 3, 6],
+        ['CS606', 'Cryptography & Network Security', 4, 6],
+        ['CS607', 'Mobile Application Development', 3, 6],
+        // Let's add some 5th sem subjects
+        ['CS501', 'Theory of Computation', 4, 5],
+        ['CS502', 'Operating Systems', 4, 5],
+        ['CS503', 'Computer Organization & Architecture', 3, 5],
+        // Let's add some 7th sem subjects
+        ['CS701', 'Cloud Computing', 4, 7],
+        ['CS702', 'Big Data Analytics', 4, 7],
+        ['CS703', 'Internet of Things', 3, 7]
       ];
 
       for (const sub of defaultSubjects) {
         await db.query(
-          'INSERT INTO subjects (code, name, credits) VALUES ($1, $2, $3)',
+          'INSERT INTO subjects (code, name, credits, semester) VALUES ($1, $2, $3, $4)',
           sub
         );
       }

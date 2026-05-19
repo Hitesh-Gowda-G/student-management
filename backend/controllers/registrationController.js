@@ -46,6 +46,24 @@ const registerSubjects = async (req, res) => {
   try {
     await client.query('BEGIN');
 
+    // Fetch student's current semester
+    const studentResult = await client.query('SELECT semester FROM students WHERE id = $1', [studentId]);
+    if (studentResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Student not found.' });
+    }
+    const studentSemester = studentResult.rows[0].semester;
+
+    // Check if any selected subject does not belong to the student's semester
+    const subjectsResCheck = await client.query('SELECT id, semester, name, code FROM subjects WHERE id = ANY($1)', [subjectIds]);
+    const invalidSubjects = subjectsResCheck.rows.filter(s => s.semester !== studentSemester);
+    if (invalidSubjects.length > 0) {
+      const invalidNames = invalidSubjects.map(s => `${s.name} (${s.code})`).join(', ');
+      return res.status(400).json({
+        success: false,
+        message: `Registration rejected: The following subjects are not for Semester ${studentSemester}: ${invalidNames}`
+      });
+    }
+
     // Check if adding these subjects exceeds 23 credits
     const existingResult = await client.query(
       'SELECT subject_id FROM registrations WHERE student_id = $1',
@@ -140,6 +158,26 @@ const modifyRegistrations = async (req, res) => {
 
   try {
     await client.query('BEGIN');
+
+    // Fetch student's current semester
+    const studentResult = await client.query('SELECT semester FROM students WHERE id = $1', [studentId]);
+    if (studentResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Student not found.' });
+    }
+    const studentSemester = studentResult.rows[0].semester;
+
+    // Check if any selected subject does not belong to the student's semester
+    if (subjectIds.length > 0) {
+      const subjectsResCheck = await client.query('SELECT id, semester, name, code FROM subjects WHERE id = ANY($1)', [subjectIds]);
+      const invalidSubjects = subjectsResCheck.rows.filter(s => s.semester !== studentSemester);
+      if (invalidSubjects.length > 0) {
+        const invalidNames = invalidSubjects.map(s => `${s.name} (${s.code})`).join(', ');
+        return res.status(400).json({
+          success: false,
+          message: `Registration rejected: The following subjects are not for Semester ${studentSemester}: ${invalidNames}`
+        });
+      }
+    }
 
     // Fetch credits for all incoming subjectIds to verify the exactly 23 credit limit
     let totalCredits = 0;

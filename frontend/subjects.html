@@ -48,15 +48,16 @@
         <table class="custom-table" id="table-subjects">
           <thead>
             <tr>
-              <th style="width: 20%;">Subject Code</th>
-              <th style="width: 50%;">Subject Name</th>
+              <th style="width: 15%;">Subject Code</th>
+              <th style="width: 40%;">Subject Name</th>
+              <th style="width: 15%;">Semester</th>
               <th style="width: 15%;">Credits</th>
               <th style="text-align: right; width: 15%;">Actions</th>
             </tr>
           </thead>
           <tbody id="tbody-subjects">
             <tr>
-              <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 40px;">
+              <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 40px;">
                 <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Loading subjects catalog...
               </td>
             </tr>
@@ -108,6 +109,21 @@
               <option value="3">3 Credits</option>
               <option value="4">4 Credits</option>
               <option value="5">5 Credits</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="subject-semester">Academic Semester</label>
+            <select id="subject-semester" class="select-control" style="width: 100%;" required>
+              <option value="" disabled selected>Select Semester</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
             </select>
           </div>
 

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS subjects (
     code VARCHAR(20) UNIQUE NOT NULL,
     name VARCHAR(150) NOT NULL,
     credits INT NOT NULL CHECK (credits > 0),
+    semester INT NOT NULL DEFAULT 6 CHECK (semester BETWEEN 1 AND 8),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
